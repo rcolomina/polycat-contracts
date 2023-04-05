@@ -5,7 +5,7 @@ pragma solidity 0.6.12;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.1.0/contracts/access/Ownable.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.1.0/contracts/token/ERC20/ERC20.sol";
 
-contract FishToken is ERC20("Fish", "FISH"), Ownable {
+contract PawToken is ERC20("Paw", "PAW"), Ownable {
     
     function mint(address _to, uint256 _amount) external onlyOwner {
         _mint(_to, _amount);
@@ -114,9 +114,9 @@ contract FishToken is ERC20("Fish", "FISH"), Ownable {
         );
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "EGG::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "EGG::delegateBySig: invalid nonce");
-        require(now <= expiry, "EGG::delegateBySig: signature expired");
+        require(signatory != address(0), "PAW::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "PAW::delegateBySig: invalid nonce");
+        require(now <= expiry, "PAW::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -146,7 +146,7 @@ contract FishToken is ERC20("Fish", "FISH"), Ownable {
         view
         returns (uint256)
     {
-        require(blockNumber < block.number, "EGG::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "PAW::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -183,7 +183,7 @@ contract FishToken is ERC20("Fish", "FISH"), Ownable {
         internal
     {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying EGGs (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying PAWs (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -219,7 +219,7 @@ contract FishToken is ERC20("Fish", "FISH"), Ownable {
     )
         internal
     {
-        uint32 blockNumber = safe32(block.number, "EGG::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "PAW::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;
